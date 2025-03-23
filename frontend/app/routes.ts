@@ -9,9 +9,7 @@ export default [
   index("routes/home.tsx"),
   route("signup", "routes/signup.tsx"),
   route("log in", "routes/login.tsx"),
-
-  ...prefix(":user", [
-    index("routes/settings.tsx"),
-    route(":user/dashboard", "routes/dashboard.tsx"),
-  ]),
+  route("dashboard", "routes/dashboard.tsx"),
+  route(":user/settings", "routes/settings.tsx"),
+  route("files", "routes/files.tsx"),
 ] satisfies RouteConfig;

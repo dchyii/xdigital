@@ -7,6 +7,7 @@ const pool = require("./db");
 const port = process.env.PORT;
 
 const userController = require("./controllers/userController");
+const fileController = require("./controllers/fileController");
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(
 
 //*middelware for routes
 app.use("/api/users", userController);
+app.use("/api/files", fileController);
 
 //*routes
 app.get("/", (req, res) => {

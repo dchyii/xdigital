@@ -9,7 +9,24 @@ services:
     ports:
       - 5432:5432
     env_file: .env
-  app:
-    image: xdigital
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: backend
     ports:
       - 4000:4000
+    depends_on:
+      - db
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    command: ["npm", "run", "dev"]
+
+volumes:
+  pgdata:

@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const methodOverride = require("method-override");
+const cookieParser = require("cookie-parser");
 const path = require("path");
 const pool = require("./db");
 const port = process.env.PORT;
@@ -14,6 +15,7 @@ const app = express();
 //*middelware
 app.use(express.json());
 app.use(methodOverride("_method"));
+app.use(cookieParser(process.env.COOKIE_SIGN));
 app.use(
   session({
     secret: process.env.SESSION_SECRET,

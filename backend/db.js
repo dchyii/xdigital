@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { PrismaClient } = require("@prisma/client");
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -9,4 +10,7 @@ const pool = new Pool({
   database: process.env.DB_DATABASE,
 });
 
+const prisma = new PrismaClient();
+
 module.exports = pool;
+module.exports = prisma;

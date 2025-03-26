@@ -69,8 +69,8 @@ router.post("/newuser", async (req, res) => {
   try {
     const newUser = await prisma.user.create({
       data: {
-        username: "Charlie", // to be replaced with req.body
-        password: "passwordc", // to be replaced with req.body
+        username: req.body.username,
+        password: req.body.password,
         isActive: true,
       },
     });
@@ -90,9 +90,12 @@ router.post("/newuser", async (req, res) => {
 router.get("/login", async (req, res) => {
   try {
     const user = await prisma.user.findUnique({
-      where: { username: "Charlie" },
+      where: { username: req.body.username },
     });
-    const checkPassword = user.password === "passwordc"; // to be replaced with req.body
+    if (!user.isActive) {
+      return res.status(400).send("User account is deleted");
+    }
+    const checkPassword = user.password === req.body.password;
     if (!user || !checkPassword) {
       return res.status(400).send("invalid credentials");
     }
@@ -102,6 +105,27 @@ router.get("/login", async (req, res) => {
       { maxAge: cookieMaxAge, signed: true }
     );
     res.status(200).send("logged in");
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).send("user not found");
+  }
+});
+
+router.get("/:username", async (req, res) => {
+  if (!req?.signedCookies?.userCookie?.username) {
+    return res.status(401).send("invalid cookie");
+  }
+  const username = req.params.username;
+  try {
+    const user = await prisma.user.findUnique({
+      where: { username: username },
+    });
+    const userInfo = {
+      id: user.id,
+      username: user.username,
+      isActive: user.isActive,
+    };
+    res.status(200).send(userInfo);
   } catch (err) {
     console.log(err.message);
     res.status(400).send("user not found");

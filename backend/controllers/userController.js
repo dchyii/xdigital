@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require("../db");
 
 router.get("/", (req, res) => {
+  res.cookie("cookieId", "testCookie", { maxAge: 60000 * 60 });
   res.status(200).json({
     message: "user API working!",
   });

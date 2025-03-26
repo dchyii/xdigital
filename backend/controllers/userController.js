@@ -87,6 +87,27 @@ router.post("/newuser", async (req, res) => {
   }
 });
 
+router.get("/login", async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { username: "Charlie" },
+    });
+    const checkPassword = user.password === "passwordc"; // to be replaced with req.body
+    if (!user || !checkPassword) {
+      return res.status(400).send("invalid credentials");
+    }
+    res.cookie(
+      "userCookie",
+      { userId: user.id, username: user.username },
+      { maxAge: cookieMaxAge, signed: true }
+    );
+    res.status(200).send("logged in");
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).send("user not found");
+  }
+});
+
 //! ^^^ with prisma orm ^^^ !//
 
 module.exports = router;

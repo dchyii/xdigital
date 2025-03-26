@@ -21,11 +21,13 @@
   },
   "homepage": "https://github.com/dchyii/xdigital#readme",
   "dependencies": {
+    "@prisma/client": "^6.5.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "method-override": "^3.0.0",
-    "pg": "^8.14.1"
+    "pg": "^8.14.1",
+    "prisma": "^6.5.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
